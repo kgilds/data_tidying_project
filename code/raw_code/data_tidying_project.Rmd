@@ -6,6 +6,11 @@ output: html_document
 ---
 
 
+This project was completed in coordination with Chromebook Data Science Course Data Tidying. 
+
+
+
+The chunk below loads required packages and installs them if not already done so.
 ```{r setup, include=FALSE}
 ## install packages if necessary
 list.of.packages <- c("httr", "readxl", "dplyr", "tidyr", "stringr", "reshape2", "skimr", "ggplot2")
@@ -29,6 +34,8 @@ library(ggplot2)
 
 [Data Set 2](https://data.world/garyhoov/retail-sales-growth) US Retail Sales by Store Type with Growth Rate [2009-2014]
 
+
+This chunk uses the GET function to obtain the data from the link and reads the excel file with the read_excel function. 
 ```{r data, warning=FALSE} 
 #1992-2016
 #https://data.world/retail/department-store-sales
@@ -46,10 +53,12 @@ colnames(df2) <- df2[1,]
 
 ### Save Raw Data
 
+This code chunk save the data to the repository in the even the data is moved from its location on the internet. Notice that it was required to use a relative path to get from the code directory to the raw-data directory
+
 ```{r save-data, warning=FALSE} 
 ## use saveRDS() to save each object as a .rds file 
 
-getwd()
+
 
 saveRDS(df1,"../../data/raw_data/df_department.rds")
 saveRDS(df2,"../../data/raw_data/df_retail.rds")
@@ -57,6 +66,7 @@ saveRDS(df2,"../../data/raw_data/df_retail.rds")
 
 ### Wrangle Data
 
+This code chunk was pre-written. It cleans up column names. If you notice some variables names are year with an r at the end. This chunk also filters data pertaining to Retail sales, total and department stores. 
 ```{r wrangle-df2, warning=FALSE} 
 ## an example working with df2
 ## let's wrangle!
@@ -77,6 +87,7 @@ df_retail <- df2 %>%
   filter(business == "Retail sales, total "| business=="Department stores ")
 ```
 
+The code chunk below works through df2 by separating the period variable into a more tidy format. This code chunk works to make variable names consistent in order to merge with df2. 
 ```{r wrangle-df1, warning=FALSE} 
 ## now, your turn!
 ## work with df1
@@ -100,11 +111,13 @@ df_department <- df1 %>%
   select(business, year, n)
 ```
 
+This code chunk uses the rbind function to merge the two datasets. 
 ```{r merge-data, warning=FALSE} 
 ## Now, combine the two data frames
-df_total <- function_name()
+df_total <- rbind(df_department, df_retail)
 ```
 
+This plot was already created via the course.
 ```{r plot, warning=FALSE, fig.width=10} 
 ## Plot Retail Sales data
 ggplot(df_retail, aes(x=year,y=n,colour=business)) +
